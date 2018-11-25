@@ -18,15 +18,14 @@ import java.util.List;
 @RequestMapping("search")
 public class SearchController {
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "")
     public String search(Model model) {
         model.addAttribute("columns", ListController.columnChoices);
         return "search";
     }
-
     // TODO #1 - Create handler to process search request and display results
 
-    @RequestMapping(value ="/results", method = RequestMethod.POST)
+    @RequestMapping(value ="results", method = RequestMethod.POST)
     public String results(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
         ArrayList jobs = JobData.findByColumnAndValue(searchType, searchTerm);
         model.addAttribute("columns", ListController.columnChoices);
