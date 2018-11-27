@@ -29,17 +29,29 @@ public class SearchController {
     @RequestMapping(value ="results")
     public String results(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
         String title = "TechJobs";
-        if (searchType == "all" || searchType == "All") {
+
+        if (searchType.toLowerCase().equals("all") && searchTerm.equals("")) {
             ArrayList<HashMap<String,String>> jobs = JobData.findAll();
+            model.addAttribute("columns", ListController.columnChoices);
+            model.addAttribute("jobs", jobs);
+            model.addAttribute("title", title);
+            return "list-jobs";
         }
+
+        else if (searchType.toLowerCase().equals("all")) {
+            ArrayList<HashMap<String,String>> jobs = JobData.findByValue(searchTerm);
+            model.addAttribute("columns", ListController.columnChoices);
+            model.addAttribute("jobs", jobs);
+            model.addAttribute("title", title);
+            return "search";
+        }
+
         else {
             ArrayList<HashMap<String,String>> jobs = JobData.findByColumnAndValue(searchType, searchTerm);
+            model.addAttribute("columns", ListController.columnChoices);
+            model.addAttribute("jobs", jobs);
+            model.addAttribute("title", title);
+            return "search";
         }
-
-
-        model.addAttribute("columns", ListController.columnChoices);
-        model.addAttribute("jobs", jobs);
-        model.addAttribute("title", title);
-        return "search";
     }
 }
